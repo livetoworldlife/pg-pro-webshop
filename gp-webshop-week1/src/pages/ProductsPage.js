@@ -17,10 +17,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
   },
 }));
 
-const initialValues = () => {
+const initialValues = () => {                         // to calculate min and max value of product price
   const priceList = DummyData.map(p => p.price);
   return [Math.min(...priceList), Math.max(...priceList)];
 
@@ -28,73 +29,53 @@ const initialValues = () => {
 
 const ProductsPage = () => {
   const classes = useStyles();
-  const [loadedPlaces, setLoadedPlaces] = useState();
+  const [loadedProducts, setLoadedProducts] = useState();
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [filteredPlaces, setFilteredPlaces] = useState();
+  const [filteredProducts, setFilteredProducts] = useState();
   const [defaultValue, setDefaultValue] = useState(initialValues);
 
 
-  useEffect(() => {
-    const fetchPlaces = async () => {
+  useEffect(() => {                               // get product data
+    const fetchProducts = async () => {
       try {
-        // const responseData = await sendRequest(
-        //   `${process.env.REACT_APP_BACKEND_URL}/places`
-        // );
-        //
         const productData = DummyData;
-
-        setLoadedPlaces(productData);
-        setFilteredPlaces(productData);
+        setLoadedProducts(productData);
+        setFilteredProducts(productData);
       } catch (err) { }
     };
-    fetchPlaces();
+    fetchProducts();
   }, []);
 
-  const handleOnChange = (e) => {
+  const handleOnChange = (e) => {                  // handle search inputs
     let searchQuery = e.target.value.toLowerCase();
     setSearchInputValue(searchQuery);
     if (searchQuery.length >= 2) {
-      let filterPlaces = loadedPlaces.filter((product) => {
+      let filterPlaces = loadedProducts.filter((product) => {
         let searchValuePlace = product.name.toLowerCase();
 
         return searchValuePlace.indexOf(searchQuery) !== -1;
       });
-      setFilteredPlaces(filterPlaces);
+      setFilteredProducts(filterPlaces);
     } else {
-      setFilteredPlaces(loadedPlaces);
+      setFilteredProducts(loadedProducts);
     }
   };
 
-  const handleSliderChange = (event, newValue) => {
-    console.log(newValue[0]);
-    let filteredProducts = loadedPlaces.filter((product) =>
+  const handleSliderChange = (event, newValue) => {     //handle slider changes
+
+    let filteredProducts = loadedProducts.filter((product) =>
       product.price > newValue[0] && product.price < newValue[1]);
 
-    console.log(filteredProducts);
-
-    setFilteredPlaces(filteredProducts);
+    setFilteredProducts(filteredProducts);
 
   };
-  // // function accepts obj of places and sort it alphabetically
-  // const getSortByName = (obj) => {
-  //   obj.sort((first, second) => {
-  //     if (first.name.toLowerCase() < second.name.toLowerCase()) return -1;
-  //     if (first.name.toLowerCase() > second.name.toLowerCase()) return 1;
-  //     return 0;
-  //   });
-  // };
-  // // sort the the loaded
-  // useEffect(() => {
-  //   if (loadedPlaces) getSortByName(loadedPlaces);
-  // }, [loadedPlaces]);
-
-  const currentPlaces = loadedPlaces && filteredPlaces;
+  const currentPlaces = loadedProducts && filteredProducts;
 
   return (
     <React.Fragment>
       <CssBaseline />
       <main>
-        {/* Hero unit */}
+        {/* Searc and Filter sections */}
         <div className={classes.heroContent}>
           <Search
             placeHolder="Search for product"
@@ -104,32 +85,10 @@ const ProductsPage = () => {
           <SliderForFilter
             defaultValue={defaultValue}
             handleSliderChange={handleSliderChange} />
-          {/* <Container maxWidth="sm">
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Album layout
-            </Typography>
-            <Typography variant="h5" align="center" color="textSecondary" paragraph>
-              Something short and leading about the collection below—its contents, the creator, etc.
-              Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-              entirely.
-            </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Secondary action
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </Container> */}
+
         </div>
-        {filteredPlaces && filteredPlaces.length === 0 && <Container maxWidth="sm">
+        {/* if seacrh or filter result is null give this info */}
+        {filteredProducts && filteredProducts.length === 0 && <Container maxWidth="sm">
           <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
             The product you are looking for was not found
             </Typography>
@@ -141,7 +100,8 @@ const ProductsPage = () => {
             If you search again carefully we hope you can find the product you are looking for.
             </Typography>
         </Container>}
-        {loadedPlaces && filteredPlaces && <ProductList items={currentPlaces} />}
+        {/* send data to child component */}
+        {loadedProducts && filteredProducts && <ProductList items={currentPlaces} />}
 
       </main>
     </React.Fragment>

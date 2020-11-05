@@ -1,13 +1,11 @@
 .search-bar-container{
   display: flex;
   justify-content: center;
-  margin:5px;
+  margin:20px 5px;
   color: rgb(255, 133, 133);
 }
 .search-cnt{
   min-width: 400px;
-
-
 }
 .input-searchbar-cnt{
   width: 300px;

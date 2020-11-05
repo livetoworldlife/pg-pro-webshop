@@ -29,6 +29,5 @@ export default function MainNavigation() {
         </Toolbar>
       </AppBar>
     </React.Fragment >
-
   )
-}
+};

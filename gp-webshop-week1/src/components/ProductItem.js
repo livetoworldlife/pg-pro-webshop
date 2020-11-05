@@ -47,14 +47,6 @@ export default function ProductItem(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      {/* <CardActions>
-      <Button size="small" color="primary">
-        View
-          </Button>
-      <Button size="small" color="primary">
-        Edit
-          </Button>
-    </CardActions> */}
     </Card>
 
 

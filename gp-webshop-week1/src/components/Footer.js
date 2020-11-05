@@ -32,10 +32,10 @@ export default function Footer() {
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           webshop
-</Typography>
+        </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
           Buy online what you want !!!
-</Typography>
+        </Typography>
         <Copyright />
       </footer>
     </React.Fragment>

@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
-import DummyData from '../dataset/data.json';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 300 + theme.spacing(3) * 2,
+    color: 'white',
+    display: 'flex',
+    marginTop: 50,
   },
-  margin: {
-    height: theme.spacing(3),
-  },
+  // margin: {
+  //   height: theme.spacing(4),
+  // },
 }));
 
 const AirbnbSlider = withStyles({
@@ -20,19 +22,19 @@ const AirbnbSlider = withStyles({
     padding: '13px 0',
   },
   thumb: {
-    height: 27,
-    width: 27,
+    height: 21,
+    width: 21,
     backgroundColor: '#fff',
     border: '1px solid currentColor',
-    marginTop: -12,
-    marginLeft: -13,
+    marginTop: -9,
+    marginLeft: -11,
     boxShadow: '#ebebeb 0 2px 2px',
     '&:focus, &:hover, &$active': {
       boxShadow: '#ccc 0 2px 3px 1px',
     },
     '& .bar': {
       // display: inline-block !important;
-      height: 9,
+      height: 7,
       width: 1,
       backgroundColor: 'currentColor',
       marginLeft: 1,
@@ -48,25 +50,31 @@ const AirbnbSlider = withStyles({
     opacity: 1,
     height: 3,
   },
+  markLabel: {
+    color: 'white'
+  },
+  valueLabel: {
+
+    marginLeft: 5
+  },
 })(Slider);
 
-function AirbnbThumbComponent(props) {
-
-  return (
-    <span {...props}>
-      <span className="bar" />
-      <span className="bar" />
-      <span className="bar" />
-    </span>
-  );
-}
+// function AirbnbThumbComponent(props) {           // for green line in bar maybe i can add next week
+//   return (
+//     <span {...props}>
+//       <span className="bar" />
+//       <span className="bar" />
+//       <span className="bar" />
+//     </span>
+//   );
+// }
 
 export default function CustomizedSlider(props) {
   const classes = useStyles();
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(400);
 
-  const marks = [
+  const marks = [                       // marks for min and max value of slider
     {
       value: minValue,
       label: `$ ${minValue}`
@@ -78,24 +86,22 @@ export default function CustomizedSlider(props) {
     }
   ];
 
-  const valueText = value => `${value}`;
+  //const valueText = value => `$${value}`;
 
   return (
     <div className={classes.root}>
       <div className={classes.margin} />
       <Typography gutterBottom>Price Filter</Typography>
-      <Slider
+      <AirbnbSlider
         //ThumbComponent={AirbnbThumbComponent}
-        // getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
+        //getAriaLabel={(index) => (index === 0 ? 'Minimum price' : 'Maximum price')}
         defaultValue={props.defaultValue}
         onChange={props.handleSliderChange}
-
-        getAriaValueText={valueText}
-        aria-labelledby="discrete-slider-always"
+        //getAriaValueText={valueText}
         marks={marks}
         max={maxValue}
         min={minValue}
-        valueLabelDisplay="on"
+        valueLabelDisplay="auto"
       />
     </div>
   );
